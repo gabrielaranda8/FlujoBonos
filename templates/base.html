@@ -13,33 +13,7 @@
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
     </style>
-    <script>
-        async function procesarOperacion(endpoint, bono) {
-            const montoInput = document.getElementById(`monto-${bono}`);
-            const resultadoDiv = document.getElementById(`resultado-${bono}`);
-            const monto = parseInt(montoInput.value);
-            const precioCompra = bono === "AL30" ? 81.220 : 82.100;
-            const precioVenta = bono === "AL30" ? 81.250 : 82.300;
-            
-            if (isNaN(monto) || monto <= 0) {
-                resultadoDiv.innerText = "Monto inválido";
-                return;
-            }
-            
-            const data = new FormData();
-            data.append("monto", monto);
-            data.append(endpoint === "/admin/comprar" ? "precio_compra" : "precio_venta", 
-                        endpoint === "/admin/comprar" ? precioCompra : precioVenta);
-            
-            const response = await fetch(endpoint, {
-                method: "POST",
-                body: data
-            });
-            
-            const result = await response.json();
-            resultadoDiv.innerText = result.nominales ? `Nominales: ${result.nominales}` : result.error;
-        }
-    </script>
+    <script src="{{ url_for('static', filename='script.js') }}" defer></script>
 </head>
 <body>
     {% if current_user.is_authenticated %}
@@ -47,10 +21,12 @@
         <div class="container">
             <div class="row justify-content-center gap-4">
                 <div class="col-md-4">
-                    <div class="card bono-card text-center bg-light">
+                    <div class="card bono-card text-center bg-light" data-bono="AL30"
+                        data-precio-compra="{{ bond_prices['MERV - XMEV - AL30 - 24hs']['compra'] }}"
+                        data-precio-venta="{{ bond_prices['MERV - XMEV - AL30 - 24hs']['venta'] }}">
                         <h4 class="mb-3">AL30</h4>
-                        <p><strong>Compra:</strong> 81.220</p>
-                        <p><strong>Venta:</strong> 81.250</p>
+                        <p><strong>Compra:</strong> {{ bond_prices["MERV - XMEV - AL30 - 24hs"]["compra"] }}</p>
+                        <p><strong>Venta:</strong> {{ bond_prices["MERV - XMEV - AL30 - 24hs"]["venta"] }}</p>
                         <p><strong>Volumen:</strong> 360.609.013</p>
                         <input type="number" id="monto-AL30" class="form-control mt-3" placeholder="Monto" min="1" required>
                         <div class="d-grid gap-2 mt-3">
@@ -60,13 +36,16 @@
                         <p class="mt-2" id="resultado-AL30"></p>
                     </div>
                 </div>
+
                 <div class="col-md-4">
-                    <div class="card bono-card text-center bg-light">
+                    <div class="card bono-card text-center bg-light" data-bono="AL30D"
+                        data-precio-compra="{{ bond_prices['AL30D/24hs']['compra'] }}"
+                        data-precio-venta="{{ bond_prices['AL30D/24hs']['venta'] }}">
                         <h4 class="mb-3">AL30D</h4>
-                        <p><strong>Compra:</strong> 82.100</p>
-                        <p><strong>Venta:</strong> 82.300</p>
+                        <p><strong>Compra:</strong> {{ bond_prices["AL30D/24hs"]["compra"] }}</p>
+                        <p><strong>Venta:</strong> {{ bond_prices["AL30D/24hs"]["venta"] }}</p>
                         <p><strong>Volumen:</strong> 250.500.000</p>
-                        <input type="number" id="monto-AL30D" class="form-control mt-3" placeholder="Monto" min="1" required>
+                        <input type="number" id="monto-AL30D" class="form-control mt-3" placeholder="Nominales" min="1" required>
                         <div class="d-grid gap-2 mt-3">
                             <button class="btn btn-success" onclick="procesarOperacion('/admin/comprar', 'AL30D')">Comprar</button>
                             <button class="btn btn-danger" onclick="procesarOperacion('/admin/vender', 'AL30D')">Vender</button>

@@ -86,7 +86,7 @@ def create_app():
 
     # Swagger configuration
     SWAGGER_URL = '/swagger'
-    API_URL = '/static/swagger.json'  # Ubicación del archivo JSON de Swagger (puedes modificar esta URL)
+    API_URL = '/static/swagger.json' 
     swagger_ui_blueprint = get_swaggerui_blueprint(
         SWAGGER_URL,
         API_URL,
