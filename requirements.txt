@@ -1,8 +1,11 @@
 Flask==2.3.2
 Flask-SQLAlchemy==3.0.5
 Flask-Login==0.6.2
+flask-restful
+flask-swagger-ui
 PyJWT==2.8.0
 Werkzeug==2.3.7
+gunicorn==21.2.0
 Flask-CORS==4.0.0
 Faker==18.11.2
 pytest==7.4.0

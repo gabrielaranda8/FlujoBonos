@@ -1,0 +1,80 @@
+swagger: "2.0"
+info:
+  description: "API para administrar la compra y venta de bonos."
+  version: "1.0.0"
+  title: "API de Administración de Bonos"
+paths:
+  /admin/comprar:
+    post:
+      summary: "Compra bonos con un monto y precio de compra específicos."
+      description: "Este endpoint permite a los administradores realizar una compra de bonos calculando cuántos bonos pueden comprar con un monto dado y un precio de compra."
+      operationId: "comprarBonos"
+      parameters:
+        - name: "monto"
+          in: "formData"
+          required: true
+          type: "integer"
+          description: "Monto total que el administrador desea invertir."
+        - name: "precio_compra"
+          in: "formData"
+          required: true
+          type: "number"
+          format: "float"
+          description: "Precio por bono."
+      responses:
+        200:
+          description: "Bonos comprados con éxito"
+          schema:
+            type: "object"
+            properties:
+              Titulos_Comprados:
+                type: "integer"
+                description: "Número de bonos comprados"
+        400:
+          description: "Error en los datos de entrada, monto o precio inválido"
+          schema:
+            type: "object"
+            properties:
+              error:
+                type: "string"
+                description: "Mensaje de error"
+        500:
+          description: "Error interno del servidor"
+  
+  /admin/vender:
+    post:
+      summary: "Vende bonos, calculando los dólares obtenidos por la venta."
+      description: "Este endpoint permite a los administradores vender bonos y calcular cuántos dólares obtendrán según el precio de venta."
+      operationId: "venderBonos"
+      parameters:
+        - name: "nominales"
+          in: "formData"
+          required: true
+          type: "integer"
+          description: "Cantidad de bonos que el administrador desea vender."
+        - name: "precio_venta"
+          in: "formData"
+          required: true
+          type: "number"
+          format: "float"
+          description: "Precio por bono."
+      responses:
+        200:
+          description: "Venta de bonos realizada con éxito"
+          schema:
+            type: "object"
+            properties:
+              Dolares_obtenidos:
+                type: "number"
+                format: "float"
+                description: "Monto en dólares obtenidos por la venta de los bonos."
+        400:
+          description: "Error en los datos de entrada, cantidad de nominales o precio inválido"
+          schema:
+            type: "object"
+            properties:
+              error:
+                type: "string"
+                description: "Mensaje de error"
+        500:
+          description: "Error interno del servidor"

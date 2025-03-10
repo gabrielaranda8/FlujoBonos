@@ -9,7 +9,7 @@ def dashboard():
     bond_prices = get_bond_prices()  # Obtener precios de bonos desde la API
     return render_template("admin/dashboard.html", bond_prices=bond_prices)
 
-@admin.route("/admin/comprar", methods=["GET", "POST"])
+@admin.route("/admin/comprar", methods=["POST"])
 def comprar():
     try:
         monto = int(request.form.get("monto", 0))
@@ -29,7 +29,7 @@ def comprar():
         return jsonify({"error": "Entrada no válida"}), 400
 
 
-@admin.route("/admin/vender", methods=["GET", "POST"])
+@admin.route("/admin/vender", methods=["POST"])
 def vender():
     try:
         nominales = int(request.form.get("nominales", 0))  # Ahora recibe nominales en lugar de monto

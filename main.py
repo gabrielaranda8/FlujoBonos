@@ -7,6 +7,8 @@ from flask_login import LoginManager, current_user
 from models.base import SessionLocal, init_db
 from models import User
 from routes.auth.utils import redirect_authenticated_user
+from flask_restful import Api
+from flask_swagger_ui import get_swaggerui_blueprint
 
 load_dotenv(override=True)
 
@@ -81,6 +83,18 @@ def create_app():
 
     for blueprint in blueprints:
         app.register_blueprint(blueprint)
+
+    # Swagger configuration
+    SWAGGER_URL = '/swagger'
+    API_URL = '/static/swagger.json'  # Ubicación del archivo JSON de Swagger (puedes modificar esta URL)
+    swagger_ui_blueprint = get_swaggerui_blueprint(
+        SWAGGER_URL,
+        API_URL,
+        config={'app_name': "Admin API"}
+    )
+    app.register_blueprint(swagger_ui_blueprint, url_prefix=SWAGGER_URL)
+
+    api = Api(app)
 
     init_db()
     create_first_user()
