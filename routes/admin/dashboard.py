@@ -1,6 +1,6 @@
-import pyRofex
 from flask import flash, render_template, redirect, request, Response, url_for, jsonify
 from routes.auth import role_required
+from utils.remarkets.prices import get_bond_prices
 from . import admin
 
 @admin.route("/admin/dashboard")
@@ -45,34 +45,3 @@ def vender():
 
     except (ValueError, TypeError):
         return jsonify({"error": "Entrada no válida"}), 400
-
-
-
-
-# Configurar pyRofex con credenciales
-pyRofex.initialize(user="gabrielaranda820753", password="jqelpJ2$", account="REM20753", environment=pyRofex.Environment.REMARKET)
-
-# Función para obtener los últimos precios de los bonos
-def get_bond_prices():
-    instruments = ["MERV - XMEV - AL30 - 24hs", "AL30D/24hs"]
-    prices = {}
-    
-    for instrument in instruments:
-        response = pyRofex.get_market_data(ticker=instrument, entries=[
-            pyRofex.MarketDataEntry.BIDS,
-            pyRofex.MarketDataEntry.OFFERS
-        ])
-        
-        if "marketData" in response:
-            market_data = response["marketData"]
-            if instrument == "MERV - XMEV - AL30 - 24hs":
-                default_compra, default_venta = 80225, 80220
-            else:  # AL30D/24hs
-                default_compra, default_venta = 65.65, 65.61
-            
-            prices[instrument] = {
-                "compra": market_data["BI"][0]["price"] if "BI" in market_data and market_data["BI"] else default_compra,
-                "venta": market_data["OF"][0]["price"] if "OF" in market_data and market_data["OF"] else default_venta
-            }
-    
-    return prices

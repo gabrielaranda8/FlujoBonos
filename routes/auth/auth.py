@@ -8,7 +8,7 @@ from routes.auth.utils import redirect_authenticated_user
 from . import authenticator
 
 
-@authenticator.route("/login", methods=["GET"])
+@authenticator.route("/login", methods=["GET", "POST"])
 def login():
 
     if current_user.is_authenticated:
