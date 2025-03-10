@@ -87,39 +87,6 @@ def create_app():
 
     return app
 
-# from flask import Flask, request, jsonify
-
-# app = Flask(__name__)
-# app.secret_key = 'your_secret_key'
-
-# # Simulación de precios del bono
-# BONO_AL30_PRECIO_ARS = 720.70  # Precio en pesos
-# BONO_AL30D_PRECIO_USD = 0.6167  # Precio en dólares
-
-# @app.route('/compra', methods=['POST'])
-# def compra_bono():
-#     data = request.get_json()
-#     monto = data.get('monto')
-    
-#     if monto is None or monto <= 0:
-#         return jsonify({'error': 'El monto debe ser un valor positivo'}), 400
-    
-#     if monto < BONO_AL30_PRECIO_ARS:
-#         return jsonify({'error': f'El monto debe ser mayor o igual a {BONO_AL30_PRECIO_ARS} ARS'}), 400
-    
-#     nominales = int(monto // BONO_AL30_PRECIO_ARS)  # Solo valores enteros
-#     return jsonify({'nominales_comprados': nominales})
-
-# @app.route('/venta', methods=['POST'])
-# def venta_bono():
-#     data = request.get_json()
-#     nominales = data.get('nominales')
-    
-#     if nominales is None or nominales <= 0:
-#         return jsonify({'error': 'La cantidad de nominales debe ser un valor positivo'}), 400
-    
-#     monto_usd = nominales * BONO_AL30D_PRECIO_USD
-#     return jsonify({'monto_obtenido_usd': round(monto_usd, 2)})
 
 if __name__ == '__main__':
     app = create_app()
